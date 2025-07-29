@@ -32,8 +32,10 @@ export interface Category {
   href: string
   count: string
   slug: string
+  parentId?: string | null;
   description?: string
   parentCategory?: string
+  createdAt?: string
   subcategories?: Category[]
 }
 
@@ -110,3 +112,4 @@ export interface UserPreferences {
   }
   theme: 'light' | 'dark' | 'auto'
 }
+

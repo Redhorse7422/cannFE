@@ -146,6 +146,22 @@ export type CategoryType = {
   isPopular: boolean
 }
 
+export type Category = {
+ id: string
+  createdAt: string
+  updatedAt: string
+  isParent: boolean
+  parentId: string | null
+  name: string
+  slug: string
+  description: string
+  isActive: boolean
+  thumbnailImageId: string
+  coverImageId: string | null
+  isFeatured: boolean
+  isPopular: boolean
+}
+
 export type VariationType = {
   attributeId?: string
   attributeName: string
