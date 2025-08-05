@@ -31,7 +31,6 @@ const useHomeConfig = () => {
 export const BuyerHomePage: React.FC = () => {
   // Fetch data
   const { data: homeConfig, isLoading: configLoad, error: configError } = useHomeConfig()
-  console.log(homeConfig)
 
   if (configError) {
     return (
@@ -53,8 +52,15 @@ export const BuyerHomePage: React.FC = () => {
   return (
     <div className='min-h-screen'>
       {/* Hero Section */}
-      <section className='relative bg-gradient-to-r from-primary to-primary/80 py-20 text-white'>
-        <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+      <section className='relative min-h-100 py-20 text-white'>
+        {/* Background Image */}
+        <div className='absolute inset-0 z-0'>
+          <Image src='/images/Banner_01.jpg' alt='Hero Background' fill className='object-cover' priority />
+          {/* Overlay for better text readability */}
+          {/* <div className='absolute inset-0 bg-black/40'></div> */}
+        </div>
+
+        {/* <div className='relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
           <div className='grid grid-cols-1 items-center gap-12 lg:grid-cols-2'>
             <div>
               <h1 className='mb-6 text-4xl font-bold md:text-5xl lg:text-6xl'>
@@ -72,25 +78,11 @@ export const BuyerHomePage: React.FC = () => {
                   Shop Now
                   <ArrowRightIcon className='ml-2 h-5 w-5' />
                 </Link>
-                {/* <Link
-                  href='/deals'
-                  className='rounded-lg border border-white/30 bg-white/20 px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-white/30'
-                >
-                  View Deals
-                </Link> */}
+               
               </div>
             </div>
-            <div className='relative'>
-              <Image
-                src='/images/cover/cover-01.png'
-                alt='Hero Image'
-                width={600}
-                height={400}
-                className='h-auto w-full'
-              />
-            </div>
           </div>
-        </div>
+        </div> */}
       </section>
 
       {/* Categories Section */}

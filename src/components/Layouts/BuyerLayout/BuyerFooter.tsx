@@ -7,18 +7,14 @@ import Link from 'next/link'
 
 const footerLinks = {
   shop: [
-    { name: 'All Products', href: '/products' },
-    { name: 'New Arrivals', href: '/new-arrivals' },
-    { name: 'Best Sellers', href: '/best-sellers' },
-    { name: 'Deals', href: '/deals' },
-    { name: 'Clearance', href: '/clearance' },
+    { name: 'All Products', href: '/shop' },
+    { name: 'Term & Conditions', href: '/terms' },
+    { name: 'Privacy Policy', href: '/privacy-policy' },
+    { name: 'About Us', href: '/about' },
   ],
   support: [
-    { name: 'Help Center', href: '/help' },
-    { name: 'Contact Us', href: '/contact' },
-    { name: 'Returns', href: '/returns' },
-    { name: 'Shipping Info', href: '/shipping' },
-    { name: 'Size Guide', href: '/size-guide' },
+    { name: 'Shipping Policy', href: '/shipping-policy' },
+    { name: 'Refund and Returns Policy', href: '/refund-policy' },
   ],
   company: [
     { name: 'About Us', href: '/about' },
@@ -61,7 +57,7 @@ export const BuyerFooter: React.FC = () => {
 
           {/* Shop Links */}
           <div>
-            <h3 className='mb-4 text-lg font-semibold'>Shop</h3>
+            <h3 className='mb-4 text-lg font-semibold'>About</h3>
             <ul className='space-y-2'>
               {footerLinks.shop.map((link) => (
                 <li key={link.name}>
@@ -75,7 +71,7 @@ export const BuyerFooter: React.FC = () => {
 
           {/* Support Links */}
           <div>
-            <h3 className='mb-4 text-lg font-semibold'>Support</h3>
+            <h3 className='mb-4 text-lg font-semibold'>Help & Guide</h3>
             <ul className='space-y-2'>
               {footerLinks.support.map((link) => (
                 <li key={link.name}>
@@ -89,15 +85,17 @@ export const BuyerFooter: React.FC = () => {
 
           {/* Company Links */}
           <div>
-            <h3 className='mb-4 text-lg font-semibold'>Company</h3>
+            <h3 className='mb-4 text-lg font-semibold'>Contact Us</h3>
             <ul className='space-y-2'>
-              {footerLinks.company.map((link) => (
-                <li key={link.name}>
-                  <Link href={link.href} className='text-gray-300 transition-colors hover:text-white'>
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
+              {/* {footerLinks.company.map((link) => ( */}
+              <li className='text-gray-300 transition-colors hover:text-white'>
+                {/* <Link href={link.href} className='text-gray-300 transition-colors hover:text-white'> */}
+                13530 Michigan Avenue Dearborn, MI 48126
+                {/* </Link> */}
+              </li>
+              <li className='text-gray-300 transition-colors hover:text-white'>info@canngroupusa.com</li>
+              <li className='text-gray-300 transition-colors hover:text-white'>+1 (734) 664-1147</li>
+              {/* ))} */}
             </ul>
           </div>
         </div>
@@ -105,8 +103,8 @@ export const BuyerFooter: React.FC = () => {
         {/* Bottom Section */}
         <div className='mt-12 border-t border-gray-800 pt-8'>
           <div className='flex flex-col items-center justify-between md:flex-row'>
-            <p className='text-sm text-gray-400'>© 2024 CannFE. All rights reserved.</p>
-            <div className='mt-4 flex items-center space-x-6 md:mt-0'>
+            <p className='text-sm text-gray-400'>© 2025 Aura Well USA. All rights reserved.</p>
+            {/* <div className='mt-4 flex items-center space-x-6 md:mt-0'>
               <Link href='/terms' className='text-sm text-gray-400 transition-colors hover:text-white'>
                 Terms of Service
               </Link>
@@ -116,7 +114,7 @@ export const BuyerFooter: React.FC = () => {
               <Link href='/cookies' className='text-sm text-gray-400 transition-colors hover:text-white'>
                 Cookie Policy
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

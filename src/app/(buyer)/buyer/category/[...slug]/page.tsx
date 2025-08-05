@@ -25,7 +25,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string[
     return (
       <CategoryDetailPage
         categoryName={categoryRes.name}
-        categoryImage={categoryRes.thumbnailImage.url || '/images/cards/cards-01.png'}
+        categoryImage={categoryRes.thumbnailImage?.url || '/images/cards/cards-01.png'}
         productCount={categoryRes.count || '0+ products'}
         categoryId={categoryRes.id}
       />

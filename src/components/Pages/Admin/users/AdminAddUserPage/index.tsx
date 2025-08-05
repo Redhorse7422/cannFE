@@ -40,7 +40,7 @@ export const AdminAddUserPage = () => {
   const onSubmit = async (data: CreateUserData) => {
     try {
       await createDataSource.mutateAsync({
-        path: '/auth/register',
+        path: '/v1/users/register',
         body: {
           userName: data.userName.trim(),
           firstName: data.firstName,

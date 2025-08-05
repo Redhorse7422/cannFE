@@ -32,11 +32,12 @@ export interface Category {
   href: string
   count: string
   slug: string
-  parentId?: string | null;
+  parentId?: string | null
   description?: string
   parentCategory?: string
   createdAt?: string
   subcategories?: Category[]
+  children?: Category[]
 }
 
 export interface CategoryData {
@@ -112,4 +113,3 @@ export interface UserPreferences {
   }
   theme: 'light' | 'dark' | 'auto'
 }
-

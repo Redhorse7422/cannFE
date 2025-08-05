@@ -39,6 +39,12 @@ export const NAV_DATA = [
         items: [],
       },
       {
+        title: 'Sellers',
+        url: '/sellers',
+        icon: Icons.User,
+        items: [],
+      },
+      {
         title: 'Coupons',
         url: '/coupons',
         icon: Icons.Table, // Using Table icon as placeholder, can be updated with a proper coupon icon
