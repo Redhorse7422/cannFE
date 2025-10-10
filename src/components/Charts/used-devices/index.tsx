@@ -1,4 +1,4 @@
-// import { PeriodPicker } from '@/components/period-picker'
+import { PeriodPicker } from '@/components/period-picker'
 import { cn } from '@/libs/utils'
 import { getDevicesUsedData } from '@/services/charts.services'
 
@@ -22,7 +22,7 @@ export async function UsedDevices({ timeFrame = 'monthly', className }: PropsTyp
       <div className='flex flex-wrap items-center justify-between gap-4'>
         <h2 className='text-body-2xlg font-bold text-dark dark:text-white'>Used Devices</h2>
 
-        {/* <PeriodPicker defaultValue={timeFrame} sectionKey='used_devices' /> */}
+        <PeriodPicker defaultValue={timeFrame} sectionKey='used_devices' />
       </div>
 
       <div className='grid place-items-center'>

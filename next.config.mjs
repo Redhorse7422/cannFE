@@ -26,17 +26,18 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'aurawell-files.s3.us-east-2.amazonaws.com',
+        hostname: 'api.aletheiascript.com',
+        port: '',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io',
         port: '',
       },
       {
         protocol: 'https',
-        hostname: 'cannbe-files-v1.s3.us-east-1.amazonaws.com',
-        port: '',
-      },
-      {
-        protocol: 'https',
-        hostname: 'cannbe-files-v1.s3.amazonaws.com',
+        hostname: 'lh3.googleusercontent.com',
         port: '',
       },
       {

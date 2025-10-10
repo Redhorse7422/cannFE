@@ -1,4 +1,4 @@
-// import { PeriodPicker } from '@/components/period-picker'
+import { PeriodPicker } from '@/components/period-picker'
 import { standardFormat } from '@/libs/format-number'
 import { cn } from '@/libs/utils'
 import { getPaymentsOverviewData } from '@/services/charts.services'
@@ -23,7 +23,7 @@ export async function PaymentsOverview({ timeFrame = 'monthly', className }: Pro
       <div className='flex flex-wrap items-center justify-between gap-4'>
         <h2 className='text-body-2xlg font-bold text-dark dark:text-white'>Payments Overview</h2>
 
-        {/* <PeriodPicker defaultValue={timeFrame} sectionKey='payments_overview' /> */}
+        <PeriodPicker defaultValue={timeFrame} sectionKey='payments_overview' />
       </div>
 
       <PaymentsOverviewChart data={data} />

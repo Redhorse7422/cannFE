@@ -56,6 +56,8 @@ const defaultValues: NewProductForm = {
   photos: [],
   variations: [],
   sellerId: '',
+  productType: 'service',
+  canBePurchased: false,
 }
 
 export type ProductVariation = {
@@ -103,6 +105,8 @@ export type NewProductForm = {
   photos: FileWithPreview[]
   variations: ProductVariation[]
   sellerId: string
+  productType: string
+  canBePurchased: boolean
 }
 
 export const AdminEditProductPage = () => {
@@ -125,6 +129,7 @@ export const AdminEditProductPage = () => {
   const methods = useForm<NewProductForm>({
     defaultValues,
   })
+  const productType = methods.watch('productType')
 
   const { setValue } = methods
 
@@ -142,6 +147,8 @@ export const AdminEditProductPage = () => {
         setValue('sellerId', (product as any).seller ? (product as any).seller.id : '')
         setValue('shortDescription', (product as any).shortDescription ?? '')
         setValue('longDescription', (product as any).longDescription ?? '')
+        setValue('productType', (product as any).productType ?? 'service')
+        setValue('canBePurchased', (product as any).canBePurchased ?? false)
 
         // Set pricing and stock
         setValue('regularPrice', (product as any).regularPrice ?? 0)
@@ -287,6 +294,8 @@ export const AdminEditProductPage = () => {
                 : variation.imageBase64[0]
               : null,
         })),
+        canBePurchased: data.canBePurchased,
+        productType: data.productType,
       }
 
       await updateDataSource.mutateAsync({
@@ -309,7 +318,7 @@ export const AdminEditProductPage = () => {
         <SectionBasicInfo control={methods.control} />
         <SectionPricingStock control={methods.control} />
         <SectionTaxShipping control={methods.control} />
-        <SectionMedia control={methods.control} />
+        {productType === 'product' && <SectionMedia control={methods.control} />}
         <SectionVariations control={methods.control} />
         <SectionSEOExternal control={methods.control} />
         <SectionStats control={methods.control} />

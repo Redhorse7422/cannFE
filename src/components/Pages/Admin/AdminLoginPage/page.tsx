@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import LOGO from '@/assets/logos/logo.webp'
+import LOGO from '@/assets/logos/logo.png'
 import Signin from '@/components/Auth/Signin'
 import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb'
 

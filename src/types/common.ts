@@ -32,10 +32,9 @@ export interface Category {
   href: string
   count: string
   slug: string
-  parentId?: string | null
   description?: string
+  longDescription?: string
   parentCategory?: string
-  createdAt?: string
   subcategories?: Category[]
   children?: Category[]
 }
@@ -45,6 +44,7 @@ export interface CategoryData {
   image: string
   productCount: string
   description?: string
+  longDescription?: string
 }
 
 // ===== SORT TYPES =====

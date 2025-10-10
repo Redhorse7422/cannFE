@@ -12,7 +12,7 @@ export default function Signin() {
       <div className='mt-6 text-center'>
         <p>
           Don&apos;t have any account?{' '}
-          <Link href='/auth/sign-up' className='text-primary'>
+          <Link href='/sign-up' className='text-primary'>
             Sign Up
           </Link>
         </p>

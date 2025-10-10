@@ -24,11 +24,11 @@ export const BuyerTopBar: React.FC = () => {
             <div className='hidden items-center space-x-4 md:flex'>
               <div className='flex items-center space-x-1'>
                 <CallIcon className='h-4 w-4 text-primary' />
-                <span className='text-gray-300'>+1 (734) 664-1147</span>
+                <span className='text-gray-300'>1-844-realGPO</span>
               </div>
               <div className='flex items-center space-x-1'>
                 <EmailIcon className='h-4 w-4 text-primary' />
-                <span className='text-gray-300'>info@canngroupusa.com</span>
+                <span className='text-gray-300'>info@aletheiascript.com</span>
               </div>
             </div>
 

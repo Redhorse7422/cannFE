@@ -76,6 +76,9 @@ export interface ProductDetail {
   photos: ImageType[]
   variations: VariationType[]
   discountEnabled?: boolean
+  // Optional fields present in admin form; used to render service vs product on buyer side
+  productType?: 'product' | 'service' | string
+  canBePurchased?: boolean
 }
 
 export interface ProductGalleryProps {
@@ -132,22 +135,6 @@ export type ImageType = {
 }
 export type CategoryType = {
   id: string
-  createdAt: string
-  updatedAt: string
-  isParent: boolean
-  parentId: string | null
-  name: string
-  slug: string
-  description: string
-  isActive: boolean
-  thumbnailImageId: string
-  coverImageId: string | null
-  isFeatured: boolean
-  isPopular: boolean
-}
-
-export type Category = {
- id: string
   createdAt: string
   updatedAt: string
   isParent: boolean

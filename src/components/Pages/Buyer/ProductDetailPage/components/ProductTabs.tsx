@@ -4,7 +4,7 @@ import type { ProductTabsProps } from '@/types/product'
 
 import React from 'react'
 
-import { StarIcon } from '@/assets/icons'
+import sanitizeHtml from '@/utils/sanitize-html'
 
 export const ProductTabs: React.FC<ProductTabsProps> = ({ product, activeTab, onTabChange }) => {
   const tabs = [
@@ -13,6 +13,8 @@ export const ProductTabs: React.FC<ProductTabsProps> = ({ product, activeTab, on
     // { id: 'reviews', label: 'Reviews' },
   ]
 
+  console.log(product.longDescription)
+
   const renderTabContent = () => {
     switch (activeTab) {
       case 'description':
@@ -20,9 +22,10 @@ export const ProductTabs: React.FC<ProductTabsProps> = ({ product, activeTab, on
           <div className='space-y-6'>
             <div>
               <h3 className='mb-4 text-lg font-semibold text-gray-900'>Product Description</h3>
-              <div className='prose max-w-none text-gray-600'>
-                <p className='whitespace-pre-line'>{product.longDescription}</p>
-              </div>
+              <div
+                className='prose max-w-none text-gray-600'
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(product.longDescription || '') }}
+              />
             </div>
 
             {product.tags && product.tags.length > 0 && (

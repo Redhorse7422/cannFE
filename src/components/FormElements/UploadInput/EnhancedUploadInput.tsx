@@ -20,6 +20,7 @@ export type FileWithPreview = {
   size: number
   type: string
   fileId?: string
+  url?: string
 }
 
 export type UploadedFile = {
@@ -131,72 +132,58 @@ export const EnhancedUploadInput: React.FC<EnhancedUploadInputProps> = (props) =
 
   // Initialize files from value prop
   useEffect(() => {
+    let nextFiles: FileUploadState[] = []
+
     if (uploadMode === 'pick') {
-      const pickFiles = value as FileWithPreview[]
-      setFiles(
-        pickFiles.map((file) => ({
-          id: file.id,
-          file: file.file,
-          preview: file.preview,
-          name: file.name,
-          size: file.size,
-          type: file.type,
-          status: 'idle' as UploadStatus,
-          progress: 0,
-        })),
-      )
-      return
-    }
-
-    // Handle different value types for upload mode
-    if (Array.isArray(value)) {
-      // Array of UploadedFile objects or strings
+      const pickFiles = (value as FileWithPreview[]) || []
+      nextFiles = pickFiles.map((file) => ({
+        id: file.id,
+        file: file.file,
+        preview: file.preview,
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        status: 'idle' as UploadStatus,
+        progress: 0,
+      }))
+    } else if (Array.isArray(value)) {
       const uploadedFiles = value as (UploadedFile | string)[]
-
-      setFiles(
-        uploadedFiles.map((file, index) => {
-          if (typeof file === 'string') {
-            // String value (fileId or URL)
-            return {
+      nextFiles = uploadedFiles.map((file, index) => {
+        if (typeof file === 'string') {
+          return {
+            id: `existing-${index}`,
+            file: null as any,
+            preview: null,
+            name: 'Uploaded file',
+            size: 0,
+            type: 'unknown',
+            status: 'existing' as UploadStatus,
+            progress: 100,
+            uploadedFile: {
               id: `existing-${index}`,
-              file: null as any,
-              preview: null, // No preview for string-only (fileId)
               name: 'Uploaded file',
               size: 0,
               type: 'unknown',
-              status: 'existing' as UploadStatus,
-              progress: 100,
-              uploadedFile: {
-                id: `existing-${index}`,
-                name: 'Uploaded file',
-                size: 0,
-                type: 'unknown',
-                url: valueField === 'url' ? file : '',
-                uploadedAt: new Date(),
-                fileId: valueField === 'fileId' ? file : undefined,
-              },
-            }
+              url: valueField === 'url' ? file : '',
+              uploadedAt: new Date(),
+              fileId: valueField === 'fileId' ? file : undefined,
+            },
           }
-          // UploadedFile object (from backend)
-          return {
-            id: file.id,
-            file: null as any,
-            preview: file.url || null, // Use backend url as preview if available
-            name: file.name,
-            size: file.size,
-            type: file.type,
-            status: 'existing' as UploadStatus,
-            progress: 100,
-            uploadedFile: file,
-          }
-        }),
-      )
-      return
-    }
-
-    if (typeof value === 'string' && value !== '') {
-      // Single string value
-      setFiles([
+        }
+        return {
+          id: file.id,
+          file: null as any,
+          preview: file.url || null,
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          status: 'existing' as UploadStatus,
+          progress: 100,
+          uploadedFile: file as UploadedFile,
+        }
+      })
+    } else if (typeof value === 'string' && value !== '') {
+      nextFiles = [
         {
           id: 'existing-0',
           file: null as any,
@@ -216,8 +203,14 @@ export const EnhancedUploadInput: React.FC<EnhancedUploadInputProps> = (props) =
             fileId: valueField === 'fileId' ? value : undefined,
           },
         },
-      ])
+      ]
     }
+
+    // 🔑 Only update state if different
+    setFiles((prev) => {
+      const same = JSON.stringify(prev) === JSON.stringify(nextFiles)
+      return same ? prev : nextFiles
+    })
   }, [value, uploadMode, valueField])
 
   // Create previews and file objects

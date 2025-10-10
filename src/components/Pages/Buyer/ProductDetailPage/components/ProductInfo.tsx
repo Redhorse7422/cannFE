@@ -210,27 +210,10 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
             'Add to Cart'
           )}
         </button>
-
-        <div className='flex space-x-3'>
-          <button
-            onClick={onAddToWishlist}
-            className='flex-1 rounded-lg border border-gray-300 bg-white px-4 py-3 font-medium text-gray-700 transition-colors hover:bg-gray-50'
-          >
-            <HeartIcon className='mr-2 inline h-5 w-5' />
-            Wishlist
-          </button>
-
-          <button
-            onClick={onShare}
-            className='flex-1 rounded-lg border border-gray-300 bg-white px-4 py-3 font-medium text-gray-700 transition-colors hover:bg-gray-50'
-          >
-            Share
-          </button>
-        </div>
       </div>
 
       {/* Product Details */}
-      <div className='space-y-4 border-t pt-6'>
+      {/* <div className='space-y-4 border-t pt-6'>
         <div className='grid grid-cols-2 gap-4 text-sm'>
           <div>
             <span className='font-medium text-gray-900'>SKU:</span>
@@ -251,7 +234,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
             </span>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Shipping Info */}
       <div className='rounded-lg bg-gray-50 p-4'>

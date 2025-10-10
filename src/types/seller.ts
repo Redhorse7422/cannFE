@@ -1,5 +1,8 @@
 // Seller Management Types
 
+import type { Category } from './common'
+import type { FileWithPreview } from '@/components/FormElements/UploadInput/EnhancedUploadInput'
+
 export type SellerStatus = 'pending' | 'approved' | 'rejected' | 'suspended' | 'inactive'
 export type SellerVerificationStatus = 'unverified' | 'pending' | 'verified' | 'rejected'
 
@@ -8,6 +11,7 @@ export interface Seller {
   userId: string
   businessName?: string
   businessDescription?: string
+  longDescription?: string
   businessPhone?: string
   businessEmail?: string
   businessWebsite?: string
@@ -46,6 +50,8 @@ export interface Seller {
     phone?: string
     isActive?: boolean
   }
+  categories?: Category[]
+  businessLogoImage?: FileWithPreview[]
 }
 
 export interface SellerFilterValues {
@@ -77,6 +83,7 @@ export interface CreateSellerData {
   userId: string
   businessName?: string
   businessDescription?: string
+  longDescription?: string
   businessPhone?: string
   businessEmail?: string
   businessWebsite?: string
@@ -97,11 +104,14 @@ export interface CreateSellerData {
   payoutMethod?: string
   payoutDetails?: string
   notes?: string
+  categoryIds?: string[]
+  businessLogo?: FileWithPreview[]
 }
 
 export interface UpdateSellerData {
   businessName?: string
   businessDescription?: string
+  longDescription?: string
   businessPhone?: string
   businessEmail?: string
   businessWebsite?: string
@@ -122,4 +132,6 @@ export interface UpdateSellerData {
   payoutMethod?: string
   payoutDetails?: string
   notes?: string
+  categoryIds?: string[]
+  businessLogo?: FileWithPreview[]
 }

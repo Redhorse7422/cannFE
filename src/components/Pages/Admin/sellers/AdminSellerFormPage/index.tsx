@@ -3,12 +3,16 @@ import type { CreateSellerData, Seller, UpdateSellerData } from '@/types/seller'
 
 import { useEffect } from 'react'
 
+import dynamic from 'next/dynamic'
 import { useParams, useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 
 import { TextAreaField } from '@/components/FormElements/Fields/TextAreaField'
+import { MultiSelectField } from '@/components/FormElements/MultiSelectField'
+const TiptapField = dynamic(() => import('@/components/FormElements/RichText/TiptapField'), { ssr: false })
 import { SelectField } from '@/components/FormElements/SelectInput'
 import { TextField } from '@/components/FormElements/TextInput'
+import { EnhancedUploadField } from '@/components/FormElements/UploadInput'
 import { Button } from '@/components/common/Button'
 import { Card } from '@/components/common/Card'
 import { Icon } from '@/components/common/icon'
@@ -16,6 +20,23 @@ import { useApi } from '@/hooks/useApi'
 import useToast from '@/hooks/useToast'
 import { logger } from '@/libs/logger.client'
 import { Grid, GridItem } from '@/libs/pureTailwind'
+
+type Category = {
+  id: string
+  name: string
+}
+
+//
+
+type CategoriesResponse = {
+  data: Category[]
+}
+
+type UsersResponse = {
+  data: Array<{ id: string; email: string; firstName?: string; lastName?: string }>
+}
+
+// NOTE: Single-item endpoints return the unwrapped entity due to axios interceptor
 
 export const AdminSellerFormPage = () => {
   const params = useParams()
@@ -37,20 +58,26 @@ export const AdminSellerFormPage = () => {
     query: {
       id: sellerId,
     },
-
-    // params: {
-    //   includeUser: 'true',
-    // },
   })
 
+  const { data: categoriesResp, error: categoriesError } = getDataSource<CategoriesResponse>({
+    path: '/v1/categories/all',
+    query: { limit: 200 },
+  })
+
+  const categoryOptions = Array.isArray(categoriesResp?.data)
+    ? categoriesResp.data.map((cat: Category) => ({ value: cat.id, label: cat.name }))
+    : []
+
   // Fetch users for dropdown
-  const { data: usersData, isLoading: usersLoading } = getDataSource<{
-    data: Array<{ id: string; email: string; firstName?: string; lastName?: string }>
-  }>({
+  const {
+    data: usersData,
+    isLoading: usersLoading,
+    error: usersError,
+  } = getDataSource<UsersResponse>({
     path: '/v1/users',
     query: {
-      limit: 1000, // Get all users
-      // sort: 'firstName',
+      limit: 1000,
     },
   })
 
@@ -58,14 +85,14 @@ export const AdminSellerFormPage = () => {
     control,
     handleSubmit,
     reset,
-    watch,
-    setValue,
     formState: { isSubmitting },
+    watch,
   } = useForm<CreateSellerData>({
     defaultValues: {
       userId: '',
       businessName: '',
       businessDescription: '',
+      longDescription: '',
       businessPhone: '',
       businessEmail: '',
       businessWebsite: '',
@@ -86,23 +113,20 @@ export const AdminSellerFormPage = () => {
       payoutMethod: '',
       payoutDetails: '',
       notes: '',
+      categoryIds: [],
+      businessLogo: [],
     },
   })
-
-  // Watch the userId field for debugging
-  const watchedUserId = watch('userId')
-  console.log('Watched userId:', watchedUserId)
-
-  console.log('Seller ===> ', seller)
 
   // Load seller data for edit mode
   useEffect(() => {
     if (isEditMode && seller) {
-      const sellerData = seller
+      const sellerData = seller as Seller
       reset({
         userId: sellerData.userId,
         businessName: sellerData.businessName || '',
         businessDescription: sellerData.businessDescription || '',
+        longDescription: sellerData.longDescription || '',
         businessPhone: sellerData.businessPhone || '',
         businessEmail: sellerData.businessEmail || '',
         businessWebsite: sellerData.businessWebsite || '',
@@ -123,55 +147,72 @@ export const AdminSellerFormPage = () => {
         payoutMethod: sellerData.payoutMethod || '',
         payoutDetails: sellerData.payoutDetails || '',
         notes: sellerData.notes || '',
+        categoryIds: sellerData.categories?.map((item: Category) => item.id) ?? [],
+        // businessLogoId: sellerData.businessLogo?.[0]?.file ?? null,
+        // businessLogo: sellerData.businessLogo?.length ? sellerData.businessLogo[0] : null,
+        businessLogo: sellerData.businessLogoImage ? [(sellerData as any).businessLogoImage] : [],
       })
     }
   }, [isEditMode, seller, reset])
 
-  // Prevent form reset from overwriting user selection in create mode
-  useEffect(() => {
-    if (!isEditMode && watchedUserId) {
-      // In create mode, if user selects a userId, ensure it's preserved
-      console.log('User selected in create mode:', watchedUserId)
-      // Ensure the userId is set in the form
-      setValue('userId', watchedUserId)
-    }
-  }, [isEditMode, watchedUserId, setValue])
+  const watchedUserId = watch('userId')
 
   const onSubmit = async (data: CreateSellerData) => {
-    console.log('Full form data ==> ', data)
-    console.log('userId type ==> ', typeof data.userId)
-    console.log('userId value ==> ', data.userId)
-    console.log('watchedUserId ==> ', watchedUserId)
-    console.log('userOptions ==> ', userOptions)
-    
-    // Use watchedUserId as fallback if data.userId is undefined
-    const finalUserId = data.userId || watchedUserId
-    
+    console.log('Paylaod ==> ', data)
+
     // Validate userId is selected
-    if (!finalUserId || finalUserId === '') {
+    const finalUserId = data.userId || watchedUserId
+
+    console.log('UserId ==> ', finalUserId)
+
+    if (!finalUserId) {
       showToast('Please select a user', 'error')
       return
     }
-    
-    // Prepare the payload
-    const payload = {
-      ...data,
-      userId: finalUserId,
-    }
-    
-    console.log('Final payload ==> ', payload)
-    
+
     try {
       if (isEditMode) {
         await updateDataSource.mutateAsync({
           path: `/v1/sellers/${sellerId}`,
-          body: payload as UpdateSellerData as unknown as Record<string, unknown>,
+          body: {
+            // ...(data as UpdateSellerData as unknown as Record<string, unknown>),
+            ...(data.businessName && { businessName: data.businessName }),
+            ...(data.businessDescription && { businessDescription: data.businessDescription }),
+            ...(data.longDescription && { longDescription: data.longDescription }),
+            ...(data.businessPhone && { businessPhone: data.businessPhone }),
+            ...(data.businessEmail && { businessEmail: data.businessEmail }),
+            ...(data.businessWebsite && { businessWebsite: data.businessWebsite }),
+            ...(data.businessAddress && { businessAddress: data.businessAddress }),
+            ...(data.businessCity && { businessCity: data.businessCity }),
+            ...(data.businessState && { businessState: data.businessState }),
+            ...(data.businessPostalCode && { businessPostalCode: data.businessPostalCode }),
+            ...(data.businessCountry && { businessCountry: data.businessCountry }),
+            ...(data.taxId && { taxId: data.taxId }),
+            ...(data.licenseNumber && { licenseNumber: data.licenseNumber }),
+            ...(data.licenseExpiryDate && { licenseExpiryDate: data.licenseExpiryDate }),
+            ...(data.status && { status: data.status }),
+            ...(data.verificationStatus && { verificationStatus: data.verificationStatus }),
+            ...(data.verificationDocuments && { verificationDocuments: data.verificationDocuments }),
+            ...(data.profileImage && { profileImage: data.profileImage }),
+            ...(data.bannerImage && { bannerImage: data.bannerImage }),
+            ...(data.commissionRate !== undefined && { commissionRate: data.commissionRate }),
+            ...(data.payoutMethod && { payoutMethod: data.payoutMethod }),
+            ...(data.payoutDetails && { payoutDetails: data.payoutDetails }),
+            ...(data.notes && { notes: data.notes }),
+            ...(data.categoryIds?.length && { categoryIds: data.categoryIds }),
+            // send only first businessLogo fileId if present
+            ...(data.businessLogo?.[0]?.fileId && { businessLogoId: data.businessLogo[0].fileId }),
+            userId: finalUserId,
+          },
         })
         showToast('Seller updated successfully!', 'success')
       } else {
         await createDataSource.mutateAsync({
           path: '/v1/sellers',
-          body: payload as unknown as Record<string, unknown>,
+          body: {
+            ...(data as unknown as Record<string, unknown>),
+            businessLogoId: data.businessLogo?.[0]?.fileId ?? null,
+          },
         })
         showToast('Seller created successfully!', 'success')
       }
@@ -231,15 +272,25 @@ export const AdminSellerFormPage = () => {
   ]
 
   // Prepare users dropdown options
-  const userOptions = [
-    { value: '', label: 'Select User' },
-    ...(usersData?.data?.map((user) => ({
-      value: user.id,
-      label: `${user.firstName || ''} ${user.lastName || ''} (${user.email})`.trim() || user.email,
-    })) || []),
-  ]
+  const userOptionsList = (usersData?.data?.map((user) => ({
+    value: user.id,
+    label: `${user.firstName || ''} ${user.lastName || ''} (${user.email})`.trim() || user.email,
+  })) || []) as { value: string; label: string }[]
 
-  console.log('Userr ===> ', userOptions)
+  // Ensure current seller's user appears in options in edit mode even if users list isn't loaded yet
+  if (isEditMode && seller) {
+    const exists = userOptionsList.some((opt) => opt.value === (seller as Seller).userId)
+    if (!exists) {
+      userOptionsList.unshift({
+        value: (seller as Seller).userId,
+        label: (seller as Seller).user
+          ? `${(seller as Seller).user?.firstName ?? ''} ${(seller as Seller).user?.lastName ?? ''} (${(seller as Seller).user?.email ?? ''})`.trim()
+          : 'Current User',
+      })
+    }
+  }
+
+  const userOptions = [{ value: '', label: 'Select User' }, ...userOptionsList]
 
   return (
     <div className='space-y-6'>
@@ -262,24 +313,22 @@ export const AdminSellerFormPage = () => {
           <Card>
             <h3 className='mb-4 text-lg font-semibold'>Basic Information</h3>
             <Grid col={{ default: 1, md: 2 }} rowGap={4} colGap={4}>
-                             <GridItem>
-                 <SelectField
-                   control={control}
-                   name='userId'
-                   label='User'
-                   items={userOptions}
-                   required
-                   disabled={isEditMode || usersLoading}
-                   placeholder='Select User'
-                   rules={{
-                     required: 'Please select a user',
-                     validate: (value) => value && value !== '' || 'Please select a user',
-                   }}
-                 />
-                 <div className='text-xs text-gray-500 mt-1'>
-                   Selected User ID: {watchedUserId || 'None'}
-                 </div>
-               </GridItem>
+              <GridItem>
+                <SelectField
+                  control={control}
+                  name='userId'
+                  label='User'
+                  items={userOptions}
+                  required
+                  disabled={isEditMode || usersLoading}
+                  placeholder='Select User'
+                  rules={{
+                    required: 'Please select a user',
+                    validate: (value) => (value && value !== '') || 'Please select a user',
+                  }}
+                />
+                {usersError && <div className='mt-1 text-xs text-red-500'>Failed to load users</div>}
+              </GridItem>
               <GridItem>
                 <TextField control={control} name='businessName' label='Business Name' />
               </GridItem>
@@ -290,6 +339,10 @@ export const AdminSellerFormPage = () => {
                   label='Business Description'
                   placeholder='Enter business description'
                 />
+              </GridItem>
+              <GridItem colSpan={{ default: 1, md: 2 }}>
+                <MultiSelectField label='Services' items={categoryOptions} name='categoryIds' control={control} />
+                {categoriesError && <div className='mt-1 text-xs text-red-500'>Failed to load categories</div>}
               </GridItem>
             </Grid>
           </Card>
@@ -306,6 +359,24 @@ export const AdminSellerFormPage = () => {
               </GridItem>
               <GridItem>
                 <TextField control={control} name='businessWebsite' label='Business Website' type='url' />
+              </GridItem>
+              <GridItem>
+                <EnhancedUploadField
+                  uploadMode='upload'
+                  control={control}
+                  name='businessLogo'
+                  uploadUrl='/api/v1/media/upload'
+                  uploadFieldName='file'
+                  valueField='full'
+                  dragBoxTitle='Product Thumbnail'
+                  accept={['.jpeg', '.jpg', '.png', '.webp']}
+                  label='Business Logo'
+                  labelAxis='horizontal'
+                  labelWidth={180}
+                  rules={{
+                    required: 'Business Logo is required',
+                  }}
+                />
               </GridItem>
             </Grid>
           </Card>
@@ -414,7 +485,13 @@ export const AdminSellerFormPage = () => {
           {/* Notes */}
           <Card>
             <h3 className='mb-4 text-lg font-semibold'>Additional Information</h3>
-            <TextAreaField control={control} name='notes' label='Notes' placeholder='Enter notes' />
+            <TiptapField
+              control={control}
+              name='longDescription'
+              label='Long Description'
+              placeholder='Detailed Seller description'
+            />
+            {/* <TextAreaField control={control} name='notes' label='Notes' placeholder='Enter notes' /> */}
           </Card>
 
           {/* Submit Buttons */}

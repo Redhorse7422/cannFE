@@ -55,6 +55,8 @@ export const defaultValues: NewProductForm = {
   photos: [],
   variations: [],
   sellerId: '',
+  productType: 'service',
+  canBePurchased: false,
 }
 
 export type ProductVariation = {
@@ -101,6 +103,8 @@ export type NewProductForm = {
   photos: FileWithPreview[]
   variations: ProductVariation[]
   sellerId: string
+  productType: string
+  canBePurchased: boolean
 }
 
 export const AdminAddProductPage: React.FC = () => {
@@ -112,6 +116,7 @@ export const AdminAddProductPage: React.FC = () => {
   const { showToast } = useToast()
   const { createDataSource } = useApi()
   const fullLoading = useFullScreenLoading()
+  const productType = methods.watch('productType')
 
   const handleOnSubmit = async (data: NewProductForm) => {
     try {
@@ -193,6 +198,8 @@ export const AdminAddProductPage: React.FC = () => {
           quantity: variation.quantity,
           imageId: variation.imageBase64.length > 0 ? variation.imageBase64[0] : null,
         })),
+        canBePurchased: data.canBePurchased,
+        productType: data.productType,
       }
 
       await createDataSource.mutateAsync({
@@ -215,7 +222,7 @@ export const AdminAddProductPage: React.FC = () => {
         <SectionBasicInfo control={methods.control} />
         <SectionPricingStock control={methods.control} />
         <SectionTaxShipping control={methods.control} />
-        <SectionMedia control={methods.control} />
+        {productType === 'product' && <SectionMedia control={methods.control} />}
         <SectionVariations control={methods.control} />
         <SectionSEOExternal control={methods.control} />
         <SectionStats control={methods.control} />

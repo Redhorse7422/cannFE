@@ -9,14 +9,13 @@ import NextTopLoader from 'nextjs-toploader'
 import '@/css/satoshi.css'
 import '@/css/style.css'
 import { MainProviders } from '@/providers/MainProvider'
-import { AgeConfirmationGate } from '@/components/AgeConfirmationGate'
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Aura Well USA',
-    default: 'Aura Well USA',
+    template: '%s | Aletheia Scripts',
+    default: 'Aletheia Scripts',
   },
-  description: 'Aura Well USA',
+  description: 'Aletheia Scripts',
 }
 
 export default function RootLayout({ children }: PropsWithChildren) {

@@ -20,6 +20,7 @@ export type NewCategoryForm = {
   parentId: string
   isFeatured: boolean
   description: string
+  longDescription: string
   thumbnail: FileWithPreview[]
   coverImage: FileWithPreview[]
 }
@@ -30,6 +31,7 @@ const defaultValues: NewCategoryForm = {
   slug: '',
   parentId: '',
   isFeatured: false,
+  longDescription: '',
   description: '',
   thumbnail: [],
   coverImage: [],
@@ -57,6 +59,7 @@ export const AdminAddCategoryPage = () => {
           ...(data.parentId && { parentId: data.parentId.trim() }),
           isFeatured: data.isFeatured,
           description: data.description.trim(),
+          longDescription: data.longDescription,
           thumbnailImageId: data.thumbnail.length > 0 && data.thumbnail[0].fileId ? data.thumbnail[0].fileId : null,
           coverImageId: data.coverImage.length > 0 && data.coverImage[0].fileId ? data.coverImage[0].fileId : null,
         },

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 
+import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 
@@ -27,6 +28,8 @@ interface SignupForm {
   email: string
   password: string
   confirmPassword: string
+  businessLicenseNumber: string
+  businessLicenseExpiryDate: string
 }
 
 type AuthMode = 'signin' | 'signup'
@@ -35,6 +38,7 @@ export const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose }) => {
   const [authMode, setAuthMode] = useState<AuthMode>('signin')
   const [isLoading, setIsLoading] = useState(false)
   const { showToast } = useToast()
+  const router = useRouter()
 
   // Signin form
   const signinForm = useForm<SigninForm>({
@@ -52,6 +56,8 @@ export const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose }) => {
       email: '',
       password: '',
       confirmPassword: '',
+      businessLicenseNumber: '',
+      businessLicenseExpiryDate: '',
     },
   })
 
@@ -104,6 +110,8 @@ export const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose }) => {
           lastName: data.lastName,
           email: data.email,
           password: data.password,
+          businessLicenseNumber: data.businessLicenseNumber,
+          businessLicenseExpiryDate: data.businessLicenseExpiryDate,
           type: 'buyer',
         }),
       })
@@ -136,9 +144,8 @@ export const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose }) => {
   }
 
   const switchToSignup = () => {
-    setAuthMode('signup')
-    signinForm.reset()
-    setIsLoading(false)
+    router.push('/sign-up')
+    onClose()
   }
 
   const switchToSignin = () => {
@@ -244,6 +251,29 @@ export const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose }) => {
                     },
                   }}
                 />
+
+                <div className='grid grid-cols-2 gap-4'>
+                  <TextField
+                    control={signupForm.control}
+                    name='businessLicenseNumber'
+                    label='Business License Number'
+                    type='text'
+                    placeholder='Enter your Business License Number'
+                    rules={{
+                      required: 'Business License Number is required',
+                    }}
+                  />
+                  <TextField
+                    control={signupForm.control}
+                    name='businessLicenseExpiryDate'
+                    label='License Expiry Date'
+                    type='date'
+                    placeholder='Enter your License Expiry Date'
+                    rules={{
+                      required: 'License Expiry Date is required',
+                    }}
+                  />
+                </div>
 
                 <TextField
                   control={signupForm.control}

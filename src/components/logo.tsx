@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import darkLogo from '@/assets/logos/logo.webp'
+import darkLogo from '@/assets/logos/logo.png'
 
 export function Logo() {
   return (

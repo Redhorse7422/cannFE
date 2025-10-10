@@ -27,6 +27,12 @@ export const NAV_DATA = [
         items: [],
       },
       {
+        title: 'EDI Upload',
+        url: '/edi',
+        icon: Icons.EDIIcon,
+        items: [],
+      },
+      {
         title: 'Orders',
         url: '/orders',
         icon: Icons.ProductsIcon,
@@ -38,10 +44,16 @@ export const NAV_DATA = [
         icon: Icons.User,
         items: [],
       },
-      {
+       {
         title: 'Sellers',
         url: '/sellers',
         icon: Icons.User,
+        items: [],
+      },
+      {
+        title: 'Ads',
+        url: '/ads',
+        icon: Icons.AdsIcon,
         items: [],
       },
       {

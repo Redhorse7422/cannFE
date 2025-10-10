@@ -30,7 +30,7 @@ export const GuestMigrationModal: React.FC<GuestMigrationModalProps> = ({ isOpen
   const [isCheckingData, setIsCheckingData] = useState(false)
   const { showToast } = useToast()
 
-  const { control, handleSubmit, reset, watch } = useForm<MigrationFormData>({
+  const { control, handleSubmit, reset } = useForm<MigrationFormData>({
     defaultValues: {
       firstName: '',
       lastName: '',
@@ -39,8 +39,6 @@ export const GuestMigrationModal: React.FC<GuestMigrationModalProps> = ({ isOpen
       phone: '',
     },
   })
-
-  const watchedValues = watch()
 
   // Check guest data when modal opens
   useEffect(() => {
@@ -94,7 +92,7 @@ export const GuestMigrationModal: React.FC<GuestMigrationModalProps> = ({ isOpen
         // Store the tokens in localStorage
         localStorage.setItem('accessToken', response.data.accessToken)
         localStorage.setItem('refreshToken', response.data.refreshToken)
-        
+
         // Sign in the user with the new credentials
         const signInResult = await signIn('credentials', {
           email: data.email,
@@ -115,7 +113,7 @@ export const GuestMigrationModal: React.FC<GuestMigrationModalProps> = ({ isOpen
           onSuccess(response.data)
           onClose()
           reset()
-          
+
           // Refresh the page to update the session
           window.location.reload()
         } else {
@@ -140,8 +138,8 @@ export const GuestMigrationModal: React.FC<GuestMigrationModalProps> = ({ isOpen
 
   return (
     <div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4'>
-      <div className='w-full max-w-md max-h-[90vh] rounded-lg bg-white shadow-xl flex flex-col'>
-        <div className='flex-shrink-0 p-6 pb-4 border-b border-gray-200'>
+      <div className='flex max-h-[90vh] w-full max-w-md flex-col rounded-lg bg-white shadow-xl'>
+        <div className='flex-shrink-0 border-b border-gray-200 p-6 pb-4'>
           <div className='flex items-center justify-between'>
             <h2 className='text-xl font-bold text-gray-900'>Create Account</h2>
             <button
@@ -245,7 +243,7 @@ export const GuestMigrationModal: React.FC<GuestMigrationModalProps> = ({ isOpen
                   placeholder='Enter your phone number'
                 />
 
-                <div className='flex space-x-3 pt-4 border-t border-gray-200 mt-4'>
+                <div className='mt-4 flex space-x-3 border-t border-gray-200 pt-4'>
                   <Button
                     type='button'
                     label='Cancel'

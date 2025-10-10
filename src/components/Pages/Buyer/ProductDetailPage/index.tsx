@@ -6,8 +6,10 @@ import type { ProductDetail, ProductImage } from '@/types/product'
 import React, { useState } from 'react'
 
 import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb'
+import RichTextViewer from '@/components/common/RichTextViewer'
 import { useCart } from '@/contexts/CartContext'
 import useToast from '@/hooks/useToast'
+// import sanitizeHtml from '@/utils/sanitize-html'
 
 import { ProductGallery } from './components/ProductGallery'
 import { ProductInfo } from './components/ProductInfo'
@@ -195,6 +197,42 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product, i
                 <div className='h-4 w-1/3 rounded bg-gray-200'></div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+  const isService = product.productType === 'service' || !product.canBePurchased
+
+  if (isService) {
+    return (
+      <div className='min-h-screen bg-gray-50'>
+        <div className='border-b bg-white'>
+          <div className='mx-auto max-w-7xl px-4 py-6 pb-0 sm:px-6 lg:px-8'>
+            <Breadcrumb pageName={product.name} />
+          </div>
+        </div>
+        <div className='mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8'>
+          <div className='rounded-lg bg-white p-6 shadow-sm'>
+            <h1 className='mb-4 text-2xl font-bold text-gray-900'>{product.name}</h1>
+            {product.shortDescription && <p className='mb-6 text-gray-600'>{product.shortDescription}</p>}
+            {/* <div
+              className='prose max-w-none text-gray-800'
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(product.longDescription || '') }}
+            /> */}
+            <RichTextViewer html={product.longDescription || ''} className='prose max-w-none text-gray-800' />
+            {product.externalLink && (
+              <div className='mt-6'>
+                <a
+                  href={product.externalLink}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='inline-flex items-center rounded-md bg-primary px-4 py-2 text-white hover:opacity-90'
+                >
+                  {product.externalLinkBtn || 'Learn More'}
+                </a>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -209,10 +209,10 @@ export const AdminSellerDetailPage = () => {
                 </div>
               </div>
               <div className='space-y-3'>
-                <div>
+                {/* <div>
                   <p className='text-sm font-medium text-gray-600'>User ID</p>
                   <p className='text-gray-900'>{sellerData.userId}</p>
-                </div>
+                </div> */}
                 <div>
                   <p className='text-sm font-medium text-gray-600'>Commission Rate</p>
                   <p className='text-gray-900'>{sellerData.commissionRate || 0}%</p>

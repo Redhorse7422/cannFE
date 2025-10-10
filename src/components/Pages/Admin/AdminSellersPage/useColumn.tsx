@@ -94,7 +94,8 @@ export const useColumn = (refetch?: () => void) => {
       key: 'businessName',
       isSort: true,
       render: (_: string, item: Seller) => {
-        const profileImage = item?.profileImage || '/images/user/user-01.png'
+        const businessLogoImage = item?.businessLogoImage as any
+        const profileImage = businessLogoImage?.url ?? '/images/user/user-01.png'
         const businessName = item?.businessName || 'Unnamed Business'
         const businessEmail = item?.businessEmail || item?.user?.email || 'No email'
 

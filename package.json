@@ -1,10 +1,10 @@
 {
-  "name": "aura-wellness",
+  "name": "aletheia",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbo",
-    "buyer:dev": "cross-env TEMPLATE=buyer NEXT_PUBLIC_TEMPLATE=buyer next dev --turbo",
+    "buyer:dev": "cross-env PORT=3002 TEMPLATE=buyer NEXT_PUBLIC_TEMPLATE=buyer next dev --turbo",
     "admin:dev": "cross-env TEMPLATE=admin NEXT_PUBLIC_TEMPLATE=admin next dev --turbo",
     "seller:dev": "cross-env TEMPLATE=seller NEXT_PUBLIC_TEMPLATE=seller next dev --turbo",
     "build": "next build",
@@ -18,7 +18,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tailwindcss/typography": "^0.5.19",
     "@tanstack/react-query": "^5.80.7",
+    "@tiptap/extension-link": "^3.6.5",
+    "@tiptap/extension-placeholder": "^3.6.5",
+    "@tiptap/react": "^3.6.5",
+    "@tiptap/starter-kit": "^3.6.5",
     "apexcharts": "^4.5.0",
     "axios": "^1.9.0",
     "class-variance-authority": "^0.7.1",

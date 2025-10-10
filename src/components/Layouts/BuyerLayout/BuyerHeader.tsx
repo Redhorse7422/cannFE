@@ -7,13 +7,12 @@ import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 
 import { SearchIcon } from '@/assets/icons'
-import LOGO from '@/assets/logos/logo.webp'
+import LOGO from '@/assets/logos/logo.png'
 import { LoginPopup } from '@/components/Auth/LoginPopup'
 import { CartIcon } from '@/components/common/CartIcon'
 import { Icon } from '@/components/common/icon'
 
 import { UserDropdown } from './UserDropdown'
-
 export const BuyerHeader: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false)
@@ -26,7 +25,7 @@ export const BuyerHeader: React.FC = () => {
           {/* Logo */}
           <div className='flex items-center'>
             <Link href='/' className='flex items-center space-x-2'>
-              <Image src={LOGO} alt='Aura Well USA' width={120} height={64} className='h-15 w-auto' />
+              <Image src={LOGO} alt='Alethia Scripts' width={180} height={64} className='h-15 w-auto' />
             </Link>
           </div>
 

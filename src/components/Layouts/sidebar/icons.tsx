@@ -173,3 +173,23 @@ export function ArrowLeftIcon(props: PropsType) {
     </svg>
   )
 }
+
+export function AdsIcon(props: PropsType) {
+  return (
+    <svg xmlns='http://www.w3.org/2000/svg' width={24} height={24} viewBox='0 0 24 24' fill='currentColor' {...props}>
+      <path d='M18 3H6C4.89543 3 4 3.89543 4 5V19C4 20.1046 4.89543 21 6 21H18C19.1046 21 20 20.1046 20 19V5C20 3.89543 19.1046 3 18 3Z' strokeWidth='1.5' stroke='currentColor' fill='none'/>
+      <path d='M8 7H16' strokeWidth='1.5' stroke='currentColor' strokeLinecap='round'/>
+      <path d='M8 11H16' strokeWidth='1.5' stroke='currentColor' strokeLinecap='round'/>
+      <path d='M8 15H12' strokeWidth='1.5' stroke='currentColor' strokeLinecap='round'/>
+    </svg>
+  )
+}
+
+export function EDIIcon(props: PropsType) {
+  return (
+    <svg xmlns='http://www.w3.org/2000/svg' width={24} height={24} viewBox='0 0 24 24' fill='currentColor' {...props}>
+      <path fillRule='evenodd' clipRule='evenodd' d='M12 1.25C11.5858 1.25 11.25 1.58579 11.25 2V9.25H4C3.58579 9.25 3.25 9.58579 3.25 10C3.25 10.4142 3.58579 10.75 4 10.75H11.25V18C11.25 18.4142 11.5858 18.75 12 18.75C12.4142 18.75 12.75 18.4142 12.75 18V10.75H20C20.4142 10.75 20.75 10.4142 20.75 10C20.75 9.58579 20.4142 9.25 20 9.25H12.75V2C12.75 1.58579 12.4142 1.25 12 1.25Z' />
+      <path fillRule='evenodd' clipRule='evenodd' d='M7.5 14.25C7.08579 14.25 6.75 14.5858 6.75 15V20C6.75 20.4142 7.08579 20.75 7.5 20.75H16.5C16.9142 20.75 17.25 20.4142 17.25 20V15C17.25 14.5858 16.9142 14.25 16.5 14.25H7.5ZM5.25 15C5.25 13.7574 6.25736 12.75 7.5 12.75H16.5C17.7426 12.75 18.75 13.7574 18.75 15V20C18.75 21.2426 17.7426 22.25 16.5 22.25H7.5C6.25736 22.25 5.25 21.2426 5.25 20V15Z' />
+    </svg>
+  )
+}

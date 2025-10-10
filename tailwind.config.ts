@@ -1,4 +1,6 @@
 import type { Config } from 'tailwindcss'
+
+import typography from '@tailwindcss/typography'
 import defaultTheme from 'tailwindcss/defaultTheme'
 
 const config: Config = {
@@ -281,7 +283,7 @@ const config: Config = {
         '21/9': '21 / 9',
       },
       backgroundImage: {
-        video: "url('../images/video/video.png')",
+        // video: "url('../images/video/video.png')",
       },
       content: {
         'icon-copy': 'url("../images/icon/icon-copy-alt.svg")',
@@ -388,7 +390,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [typography],
   safelist: [
     '!text-green-500',
     '!text-yellow-100',

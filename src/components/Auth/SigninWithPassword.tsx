@@ -47,7 +47,7 @@ export const SigninWithPassword = () => {
 
       if (result?.ok) {
         showToast('Login successful!', 'success')
-        router.push('/admin')
+        router.push('/')
       }
     } catch (error) {
       logger.error('Signin error:', error)
